@@ -41,6 +41,19 @@ public class ArrayList<E> implements List<E> {
         return elementData(index);
     }
 
+    @Override
+    public void set(int index, E item) {
+        if (index > count) {
+            for (int i = count; i < index; i++) {
+                add(null);
+            }
+            add(item);
+        }
+        else {
+            source[index] = item;
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private E elementData(int index) {
         return (E) source[index];

@@ -1,4 +1,4 @@
-HashTable
+LinkedHashTable
 =========
 
-HashTable different implementations in Java
+LinkedHashTable different implementations in Java

@@ -3,4 +3,5 @@ public interface List<E> {
     E remove(int index);
     int size();
     E get(int index);
+    void set(int index, E item);
 }

@@ -70,4 +70,33 @@ public class ArrayListTest {
 
         assertThat(arrayList.size(), is(0));
     }
+
+    @Test
+    public void testSettingValueToExactIndex() throws Exception {
+        String first = "First";
+        String second = "Second";
+        String third = "Third";
+
+        arrayList.add(first);
+        arrayList.add(second);
+        arrayList.add(third);
+
+        assertThat(arrayList.size(), is(3));
+
+        String newValue = "NewValue";
+        arrayList.set(1, newValue);
+        assertThat(arrayList.get(1), is(newValue));
+    }
+
+    @Test
+    public void testSetValueToExactIndexOnEmptyList() throws Exception {
+        String first = "First";
+        arrayList.set(2, first);
+
+        assertThat(arrayList.size(), is(3));
+        assertThat(arrayList.get(0), is((String)null));
+        assertThat(arrayList.get(1), is((String)null));
+        assertThat(arrayList.get(2), is(first));
+
+    }
 }
