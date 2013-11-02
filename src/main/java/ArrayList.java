@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class ArrayList<E> implements List<E> {
     private final static int DEFAULT_CAPACITY = 16;
 
@@ -52,6 +54,16 @@ public class ArrayList<E> implements List<E> {
         else {
             source[index] = item;
         }
+    }
+
+    @Override
+    public boolean contains(E key) {
+        for (Object item : source) {
+            if (Objects.equals(item, key))
+                return true;
+        }
+
+        return false;
     }
 
     @SuppressWarnings("unchecked")

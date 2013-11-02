@@ -2,6 +2,7 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class LinkedHashTableTest {
         MatcherAssert.assertThat(julia.getAge(), CoreMatchers.is(4));
 
         MatcherAssert.assertThat(hashTable.get(name1), CoreMatchers.is((Person)null));
-        MatcherAssert.assertThat(hashTable.get(name2), CoreMatchers.is((Person)null));
+        MatcherAssert.assertThat(hashTable.get(name2), CoreMatchers.is((Person) null));
     }
 
     @Test
@@ -65,6 +66,29 @@ public class LinkedHashTableTest {
         Set<String> keys = hashTable.getKeys();
         MatcherAssert.assertThat(keys.contains(name1), CoreMatchers.is(true));
         MatcherAssert.assertThat(keys.contains(name2), CoreMatchers.is(true));
+    }
+
+    @Test
+    public void testMoreThanOneHoundredItems() throws Exception {
+        for (int i = 0; i < 100; i++) {
+            String name = "Name_" + i;
+            hashTable.add(name, new Person(name, i+1));
+        }
+
+        for (int i = 0; i < 100; i++) {
+            String name = "Name_" + i;
+            Person person = hashTable.get(name);
+
+            MatcherAssert.assertThat(person.getName(), CoreMatchers.is(name));
+            MatcherAssert.assertThat(person.getAge(), CoreMatchers.is(i+1));
+        }
+    }
+
+    @Test(expected = InvalidStateException.class)
+    public void testAddTheSameKeyThrowsException() throws Exception {
+        String name1 = "Mikolaj";
+        hashTable.add(name1, new Person(name1, 1));
+        hashTable.add(name1, new Person(name1, 1));
     }
 }
 

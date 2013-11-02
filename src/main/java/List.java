@@ -4,4 +4,5 @@ public interface List<E> {
     int size();
     E get(int index);
     void set(int index, E item);
+    boolean contains(E key);
 }

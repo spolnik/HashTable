@@ -1,3 +1,6 @@
+import com.sun.javaws.exceptions.InvalidArgumentException;
+import sun.plugin.dom.exception.InvalidStateException;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +16,10 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
 
     @Override
     public void add(K key, V value) {
+        if (keys.contains(key)) {
+            throw new InvalidStateException("The element with the same key already exist.");
+        }
+
         keys.add(key);
         KeyValue<K, V> item = new KeyValue<>(key, value);
         int index = getIndex(key);
@@ -30,12 +37,17 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        Node<KeyValue<K, V>> keyValueNode = buckets.get(index);
+        Node<KeyValue<K, V>> node = buckets.get(index);
 
-        if (keyValueNode == null)
-            return null;
+        while (node != null) {
+            if (node.getData().key.equals(key)) {
+                return node.getData().value;
+            }
 
-        return keyValueNode.getData().value;
+            node = node.getNext();
+        }
+
+        return null;
     }
 
     @Override
