@@ -71,6 +71,30 @@ public class LinkedHashTable<K, V> implements HashTable<K, V> {
         return result;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder stringRepresentation = new StringBuilder();
+        stringRepresentation.append("HashTable{");
+
+        for (int i = 0; i < buckets.size(); i++) {
+            Node<KeyValue<K, V>> node = buckets.get(i);
+
+            if (node == null) {
+                stringRepresentation.append("[").append(i).append("] => (null); ");
+            }
+
+            while (node != null) {
+                stringRepresentation.append("[").append(i).append("] => (")
+                        .append(node.getData().key).append(" => ")
+                        .append(node.getData().value).append("); ");
+                node = node.getNext();
+            }
+        }
+
+        stringRepresentation.append("}");
+        return stringRepresentation.toString();
+    }
+
     private int getIndex(K key) {
         int hash = key.hashCode();
 

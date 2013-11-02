@@ -31,6 +31,8 @@ public class LinkedHashTableTest {
 
         MatcherAssert.assertThat(julia.getName(), CoreMatchers.is(name2));
         MatcherAssert.assertThat(julia.getAge(), CoreMatchers.is(4));
+
+        System.out.println("testAdd(): " + hashTable.toString());
     }
 
     @Test
@@ -53,6 +55,8 @@ public class LinkedHashTableTest {
 
         MatcherAssert.assertThat(hashTable.get(name1), CoreMatchers.is((Person) null));
         MatcherAssert.assertThat(hashTable.get(name2), CoreMatchers.is((Person) null));
+
+        System.out.println("testRemove(): " + hashTable.toString());
     }
 
     @Test
@@ -66,6 +70,8 @@ public class LinkedHashTableTest {
         Set<String> keys = hashTable.getKeys();
         MatcherAssert.assertThat(keys.contains(name1), CoreMatchers.is(true));
         MatcherAssert.assertThat(keys.contains(name2), CoreMatchers.is(true));
+
+        System.out.println("testGetKeys(): " + hashTable.toString());
     }
 
     @Test
@@ -82,6 +88,8 @@ public class LinkedHashTableTest {
             MatcherAssert.assertThat(person.getName(), CoreMatchers.is(name));
             MatcherAssert.assertThat(person.getAge(), CoreMatchers.is(i + 1));
         }
+
+        System.out.println("testMoreThanOneHoundredItems(): " + hashTable.toString());
     }
 
     @Test(expected = InvalidStateException.class)
@@ -107,5 +115,13 @@ class Person {
 
     int getAge() {
         return age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
