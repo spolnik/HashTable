@@ -51,7 +51,7 @@ public class LinkedHashTableTest {
         MatcherAssert.assertThat(julia.getName(), CoreMatchers.is(name2));
         MatcherAssert.assertThat(julia.getAge(), CoreMatchers.is(4));
 
-        MatcherAssert.assertThat(hashTable.get(name1), CoreMatchers.is((Person)null));
+        MatcherAssert.assertThat(hashTable.get(name1), CoreMatchers.is((Person) null));
         MatcherAssert.assertThat(hashTable.get(name2), CoreMatchers.is((Person) null));
     }
 
@@ -72,7 +72,7 @@ public class LinkedHashTableTest {
     public void testMoreThanOneHoundredItems() throws Exception {
         for (int i = 0; i < 100; i++) {
             String name = "Name_" + i;
-            hashTable.add(name, new Person(name, i+1));
+            hashTable.add(name, new Person(name, i + 1));
         }
 
         for (int i = 0; i < 100; i++) {
@@ -80,7 +80,7 @@ public class LinkedHashTableTest {
             Person person = hashTable.get(name);
 
             MatcherAssert.assertThat(person.getName(), CoreMatchers.is(name));
-            MatcherAssert.assertThat(person.getAge(), CoreMatchers.is(i+1));
+            MatcherAssert.assertThat(person.getAge(), CoreMatchers.is(i + 1));
         }
     }
 

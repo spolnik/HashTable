@@ -3,9 +3,9 @@ import sun.plugin.dom.exception.InvalidStateException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LinkedHashTable<K,V> implements HashTable<K,V> {
+public class LinkedHashTable<K, V> implements HashTable<K, V> {
 
-    private List<Node<KeyValue<K,V>>> buckets;
+    private List<Node<KeyValue<K, V>>> buckets;
     private List<K> keys = new ArrayList<>();
     private int capacity = 32;
 
@@ -88,14 +88,13 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
 
         if (oldNode != null) {
             oldNode.appendToTail(item);
-        }
-        else {
+        } else {
             buckets.set(index, new Node<>(item));
         }
     }
 
     private void increaseBucketsAndRehash() {
-        List<Node<KeyValue<K,V>>> oldBuckets = buckets;
+        List<Node<KeyValue<K, V>>> oldBuckets = buckets;
 
         capacity *= 2;
         refreshBuckets();
@@ -117,7 +116,7 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
         }
     }
 
-    class KeyValue<K,V> {
+    class KeyValue<K, V> {
         final K key;
         V value;
 

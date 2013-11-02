@@ -1,8 +1,8 @@
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.CoreMatchers.*;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ArrayListTest {
     private List<String> arrayList;
@@ -94,8 +94,8 @@ public class ArrayListTest {
         arrayList.set(2, first);
 
         assertThat(arrayList.size(), is(3));
-        assertThat(arrayList.get(0), is((String)null));
-        assertThat(arrayList.get(1), is((String)null));
+        assertThat(arrayList.get(0), is((String) null));
+        assertThat(arrayList.get(1), is((String) null));
         assertThat(arrayList.get(2), is(first));
 
     }

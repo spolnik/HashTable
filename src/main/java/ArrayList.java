@@ -2,7 +2,6 @@ import java.util.Objects;
 
 public class ArrayList<E> implements List<E> {
     private final static int DEFAULT_CAPACITY = 16;
-
     private Object[] source = new Object[DEFAULT_CAPACITY];
     private int capacity = DEFAULT_CAPACITY;
     private int count = 0;
@@ -27,7 +26,7 @@ public class ArrayList<E> implements List<E> {
         // could be optimized with System.arrayCopy (native),
         // for full coverage of algorithm in code the java version is left there
         for (int i = index; i < count; i++) {
-            source[i] = source[i+1];
+            source[i] = source[i + 1];
         }
 
         return removedItem;
@@ -50,8 +49,7 @@ public class ArrayList<E> implements List<E> {
                 add(null);
             }
             add(item);
-        }
-        else {
+        } else {
             source[index] = item;
         }
     }
