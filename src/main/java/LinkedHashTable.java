@@ -18,24 +18,40 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
         int index = getIndex(key);
 
         Node<KeyValue<K, V>> oldNode = buckets.get(index);
-        Node<KeyValue<K,V>> newNode = new Node<>(item);
 
         if (oldNode != null) {
-            newNode.next = oldNode;
+            oldNode.appendToTail(item);
         }
-
-        buckets.set(index, newNode);
+        else {
+            buckets.set(index, new Node<>(item));
+        }
     }
 
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        return buckets.get(index).data.value;
+        Node<KeyValue<K, V>> keyValueNode = buckets.get(index);
+
+        if (keyValueNode == null)
+            return null;
+
+        return keyValueNode.getData().value;
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        V result = get(key);
+
+        if (result == null)
+            return null;
+
+        int index = getIndex(key);
+        Node<KeyValue<K, V>> node = buckets.get(index);
+
+        Node<KeyValue<K, V>> newNode = node.deleteNode(node.getData());
+        buckets.set(index, newNode);
+
+        return result;
     }
 
     @Override
@@ -69,15 +85,6 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
         KeyValue(K key, V value) {
             this.key = key;
             this.value = value;
-        }
-    }
-
-    class Node<T> {
-        T data;
-        Node<T> next;
-
-        Node(T data) {
-            this.data = data;
         }
     }
 }

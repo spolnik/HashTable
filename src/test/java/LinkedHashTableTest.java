@@ -2,7 +2,6 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Set;
 
@@ -35,7 +34,24 @@ public class LinkedHashTableTest {
 
     @Test
     public void testRemove() throws Exception {
-        throw new NotImplementedException();
+        String name1 = "Mikolaj";
+        hashTable.add(name1, new Person(name1, 1));
+
+        String name2 = "Julia";
+        hashTable.add(name2, new Person(name2, 4));
+
+        Person mikolaj = hashTable.remove(name1);
+
+        MatcherAssert.assertThat(mikolaj.getName(), CoreMatchers.is(name1));
+        MatcherAssert.assertThat(mikolaj.getAge(), CoreMatchers.is(1));
+
+        Person julia = hashTable.remove(name2);
+
+        MatcherAssert.assertThat(julia.getName(), CoreMatchers.is(name2));
+        MatcherAssert.assertThat(julia.getAge(), CoreMatchers.is(4));
+
+        MatcherAssert.assertThat(hashTable.get(name1), CoreMatchers.is((Person)null));
+        MatcherAssert.assertThat(hashTable.get(name2), CoreMatchers.is((Person)null));
     }
 
     @Test
