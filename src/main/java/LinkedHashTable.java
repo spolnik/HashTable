@@ -1,17 +1,16 @@
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class LinkedHashTable<K,V> implements HashTable<K,V> {
-    private List<Node<KeyValue<K,V>>> buckets = new ArrayList<>();
+
+    private List<Node<KeyValue<K,V>>> buckets;
     private List<K> keys = new ArrayList<>();
+    private int capacity = 32;
 
     public LinkedHashTable() {
-        for (int i = 0; i < 32; i++) {
-            buckets.add(null);
-        }
+        refreshBuckets();
     }
 
     @Override
@@ -21,17 +20,12 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
         }
 
         keys.add(key);
-        KeyValue<K, V> item = new KeyValue<>(key, value);
-        int index = getIndex(key);
 
-        Node<KeyValue<K, V>> oldNode = buckets.get(index);
+        if (buckets.size() * 0.75 <= keys.size()) {
+            increaseBucketsAndRehash();
+        }
 
-        if (oldNode != null) {
-            oldNode.appendToTail(item);
-        }
-        else {
-            buckets.set(index, new Node<>(item));
-        }
+        addInternal(key, value);
     }
 
     @Override
@@ -78,7 +72,7 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
     }
 
     private int getIndex(K key) {
-        int hash = getHash(key);
+        int hash = key.hashCode();
 
         if (hash < 0)
             hash *= -1;
@@ -86,8 +80,41 @@ public class LinkedHashTable<K,V> implements HashTable<K,V> {
         return hash % buckets.size();
     }
 
-    private int getHash(K key) {
-        return key.hashCode();
+    private void addInternal(K key, V value) {
+        KeyValue<K, V> item = new KeyValue<>(key, value);
+        int index = getIndex(key);
+
+        Node<KeyValue<K, V>> oldNode = buckets.get(index);
+
+        if (oldNode != null) {
+            oldNode.appendToTail(item);
+        }
+        else {
+            buckets.set(index, new Node<>(item));
+        }
+    }
+
+    private void increaseBucketsAndRehash() {
+        List<Node<KeyValue<K,V>>> oldBuckets = buckets;
+
+        capacity *= 2;
+        refreshBuckets();
+
+        for (int i = 0; i < oldBuckets.size(); i++) {
+            Node<KeyValue<K, V>> node = oldBuckets.get(i);
+
+            while (node != null) {
+                addInternal(node.getData().key, node.getData().value);
+                node = node.getNext();
+            }
+        }
+    }
+
+    private void refreshBuckets() {
+        buckets = new ArrayList<>();
+        for (int i = 0; i < capacity; i++) {
+            buckets.add(null);
+        }
     }
 
     class KeyValue<K,V> {
